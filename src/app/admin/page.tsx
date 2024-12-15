@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 
 export default function AdminPage() {
@@ -9,7 +9,6 @@ export default function AdminPage() {
   const [password, setPassword] = useState('')
   const [emails, setEmails] = useState<string[]>([])
   const [error, setError] = useState('')
-  const router = useRouter()
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault()

@@ -18,7 +18,7 @@ const NotFound: React.FC = () => {
             This page has not been developed yet
           </h2>
           <p className="text-lg text-blue-100 mb-8">
-            We're working hard to bring you amazing features. Sign up to be notified when they're ready!
+            We&apos;re working hard to bring you amazing features. Sign up to be notified when they&apos;re ready!
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link

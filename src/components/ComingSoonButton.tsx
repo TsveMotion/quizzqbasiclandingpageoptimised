@@ -81,7 +81,7 @@ export default function ComingSoonButton({ label, isMobile = false }: ComingSoon
               Get Notified When {label} Launches
             </Dialog.Title>
             <Dialog.Description className="text-lg sm:text-xl text-gray-600 mb-8 sm:mb-10 text-center max-w-2xl mx-auto px-4">
-              Sign up to be the first to know when this feature becomes available. We'll notify you as soon as it's ready!
+              Sign up to be the first to know when this feature becomes available. We&apos;ll notify you as soon as it&apos;s ready!
             </Dialog.Description>
 
             <form onSubmit={handleSubmit} className="space-y-6 sm:space-y-8 max-w-xl sm:max-w-2xl mx-auto px-4">

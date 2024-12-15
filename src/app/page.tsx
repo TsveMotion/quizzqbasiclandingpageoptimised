@@ -60,8 +60,7 @@ export default function Home() {
             The Future of Learning is Coming
           </h1>
           <p className="text-lg sm:text-xl leading-relaxed text-blue-100 max-w-2xl mx-auto mb-6 sm:mb-8 px-4">
-            Be among the first to experience our AI-powered learning platform. 
-            Sign up now to get early access and exclusive benefits when we launch.
+            We&apos;re building the most advanced AI-powered learning platform. Here&apos;s what you can expect:
           </p>
           <div className="max-w-md mx-auto mb-4 sm:mb-6 px-4 relative">
             <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row gap-3">
