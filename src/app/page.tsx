@@ -94,7 +94,7 @@ export default function Home() {
             Coming Soon to QuizzQ
           </h2>
           <p className="text-base sm:text-lg md:text-xl text-gray-600 text-center mb-12 sm:mb-16 max-w-3xl mx-auto px-4">
-            We're building the most advanced AI-powered learning platform. Here's what you can expect:
+            We&apos;re building the most advanced AI-powered learning platform. Here&apos;s what you can expect:
           </p>
           
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 lg:gap-10 px-4">
