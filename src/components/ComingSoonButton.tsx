@@ -5,21 +5,28 @@ import { Dialog } from '@headlessui/react'
 
 interface ComingSoonButtonProps {
   label: string
+  isMobile?: boolean
 }
 
-export default function ComingSoonButton({ label }: ComingSoonButtonProps) {
+export default function ComingSoonButton({ label, isMobile = false }: ComingSoonButtonProps) {
   const [isOpen, setIsOpen] = useState(false)
+
+  const buttonClasses = isMobile
+    ? "w-full py-4 text-left text-base text-gray-700 hover:text-blue-600 font-medium"
+    : "text-base text-gray-700 hover:text-blue-600 font-medium transition-colors group relative"
 
   return (
     <>
       <button
         onClick={() => setIsOpen(true)}
-        className="text-base text-gray-700 hover:text-blue-600 font-medium transition-colors group relative w-full text-left md:text-center py-2 md:py-0"
+        className={buttonClasses}
       >
         {label}
-        <span className="absolute -top-8 left-1/2 -translate-x-1/2 px-2 py-1 bg-gray-900 text-white text-xs rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">
-          Coming Soon
-        </span>
+        {!isMobile && (
+          <span className="absolute -top-8 left-1/2 -translate-x-1/2 px-2 py-1 bg-gray-900 text-white text-xs rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">
+            Coming Soon
+          </span>
+        )}
       </button>
 
       <Dialog
