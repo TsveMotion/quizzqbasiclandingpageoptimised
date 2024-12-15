@@ -1,7 +1,7 @@
 'use client'
 
-import { useState } from 'react'
 import { Dialog } from '@headlessui/react'
+import { useState } from 'react'
 
 interface ComingSoonButtonProps {
   label: string
@@ -10,6 +10,40 @@ interface ComingSoonButtonProps {
 
 export default function ComingSoonButton({ label, isMobile = false }: ComingSoonButtonProps) {
   const [isOpen, setIsOpen] = useState(false)
+  const [email, setEmail] = useState('')
+  const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle')
+  const [message, setMessage] = useState('')
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault()
+    setStatus('loading')
+
+    try {
+      const response = await fetch('/api/subscribe', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email }),
+      })
+
+      const data = await response.json()
+
+      if (!response.ok) throw new Error(data.message || 'Something went wrong')
+
+      setStatus('success')
+      setMessage('Thank you for joining our waitlist!')
+      setEmail('')
+      setTimeout(() => {
+        setIsOpen(false)
+        setStatus('idle')
+        setMessage('')
+      }, 2000)
+    } catch (error) {
+      setStatus('error')
+      setMessage(error instanceof Error ? error.message : 'Failed to subscribe')
+    }
+  }
 
   const buttonClasses = isMobile
     ? "w-full py-4 text-left text-base text-gray-700 hover:text-blue-600 font-medium"
@@ -50,7 +84,7 @@ export default function ComingSoonButton({ label, isMobile = false }: ComingSoon
               Sign up to be the first to know when this feature becomes available. We'll notify you as soon as it's ready!
             </Dialog.Description>
 
-            <form className="space-y-6 sm:space-y-8 max-w-xl sm:max-w-2xl mx-auto px-4">
+            <form onSubmit={handleSubmit} className="space-y-6 sm:space-y-8 max-w-xl sm:max-w-2xl mx-auto px-4">
               <div className="space-y-2 sm:space-y-3">
                 <label htmlFor="email" className="block text-sm sm:text-base font-medium text-gray-700">
                   Email address
@@ -58,17 +92,27 @@ export default function ComingSoonButton({ label, isMobile = false }: ComingSoon
                 <input
                   id="email"
                   type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
                   placeholder="Enter your email address"
-                  className="w-full px-4 sm:px-6 py-3 sm:py-4 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 text-base sm:text-lg"
+                  className="w-full px-4 sm:px-6 py-3 sm:py-4 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 text-base sm:text-lg text-black"
                   required
                 />
               </div>
+              
+              {message && (
+                <p className={`text-sm ${status === 'error' ? 'text-red-600' : 'text-green-600'} text-center`}>
+                  {message}
+                </p>
+              )}
+
               <div className="flex flex-col sm:flex-row gap-3 sm:gap-6">
                 <button
                   type="submit"
-                  className="flex-1 px-6 sm:px-8 py-3 sm:py-4 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 transition-colors text-base sm:text-lg"
+                  disabled={status === 'loading'}
+                  className="flex-1 px-6 sm:px-8 py-3 sm:py-4 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 transition-colors text-base sm:text-lg disabled:opacity-50"
                 >
-                  Notify Me
+                  {status === 'loading' ? 'Joining...' : 'Notify Me'}
                 </button>
                 <button
                   type="button"

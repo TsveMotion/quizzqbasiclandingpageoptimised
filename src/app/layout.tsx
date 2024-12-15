@@ -1,14 +1,12 @@
 import type { Metadata } from "next"
 import { Inter } from "next/font/google"
 import "./globals.css"
+import { metadata as pageMetadata } from './metadata'
 import Navigation from "@/components/Navigation"
 
 const inter = Inter({ subsets: ["latin"] })
 
-export const metadata: Metadata = {
-  title: "QuizzQ - AI-Powered Learning Platform",
-  description: "Revolutionary AI-powered GCSE science tuition platform",
-}
+export const metadata: Metadata = pageMetadata
 
 export default function RootLayout({
   children,

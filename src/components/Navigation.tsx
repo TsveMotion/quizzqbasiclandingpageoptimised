@@ -58,20 +58,20 @@ export default function Navigation() {
         }`}
       >
         <div className="px-4 py-6 flex flex-col">
-          <div className="flex flex-col divide-y divide-gray-100">
-            <div className="py-2">
+          <div className="flex flex-col space-y-4">
+            <div className="mobile-menu-item">
               <ComingSoonButton label="Videos & Quizzes" isMobile />
             </div>
-            <div className="py-2">
+            <div className="mobile-menu-item">
               <ComingSoonButton label="Exam Questions" isMobile />
             </div>
-            <div className="py-2">
+            <div className="mobile-menu-item">
               <ComingSoonButton label="Students" isMobile />
             </div>
-            <div className="py-2">
+            <div className="mobile-menu-item">
               <ComingSoonButton label="Teachers" isMobile />
             </div>
-            <div className="py-2">
+            <div className="mobile-menu-item">
               <ComingSoonButton label="Schools" isMobile />
             </div>
           </div>

@@ -1,12 +1,50 @@
-import Link from 'next/link'
+'use client'
 
-export const metadata = {
-  title: 'QuizzQ - AI-Powered Learning Platform (Beta)',
-  description: 'Join the waitlist for our revolutionary AI-powered learning platform. Be the first to experience personalized learning with our AI tutor.',
-  keywords: 'AI learning platform, beta signup, education waitlist, AI tutor, personalized learning',
-}
+import { useState } from 'react'
 
 export default function Home() {
+  const [email, setEmail] = useState('')
+  const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle')
+  const [message, setMessage] = useState('')
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault()
+    setStatus('loading')
+
+    try {
+      const response = await fetch('/api/subscribe', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email }),
+      })
+
+      const data = await response.json()
+
+      if (!response.ok) throw new Error(data.message || 'Something went wrong')
+
+      setStatus('success')
+      setMessage('Thank you for joining our waitlist!')
+      setEmail('')
+
+      // Reset message after 5 seconds
+      setTimeout(() => {
+        setStatus('idle')
+        setMessage('')
+      }, 5000)
+    } catch (error) {
+      setStatus('error')
+      setMessage(error instanceof Error ? error.message : 'Failed to subscribe')
+      
+      // Reset error message after 5 seconds
+      setTimeout(() => {
+        setStatus('idle')
+        setMessage('')
+      }, 5000)
+    }
+  }
+
   return (
     <main className="min-h-screen bg-gray-50">
       {/* Hero Section */}
@@ -25,19 +63,22 @@ export default function Home() {
             Be among the first to experience our AI-powered learning platform. 
             Sign up now to get early access and exclusive benefits when we launch.
           </p>
-          <div className="max-w-md mx-auto mb-4 sm:mb-6 px-4">
-            <form className="flex flex-col sm:flex-row gap-3">
+          <div className="max-w-md mx-auto mb-4 sm:mb-6 px-4 relative">
+            <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row gap-3">
               <input 
                 type="email" 
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
                 placeholder="Enter your email address" 
-                className="flex-1 px-4 py-3 rounded-lg text-gray-900 placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="flex-1 px-4 py-3 rounded-lg text-black placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500"
                 required
               />
               <button 
                 type="submit"
-                className="px-6 py-3 bg-white text-blue-600 text-base sm:text-lg font-semibold rounded-lg hover:bg-blue-50 transition-all duration-200 shadow-lg hover:shadow-xl whitespace-nowrap"
+                disabled={status === 'loading'}
+                className="px-6 py-3 bg-white text-blue-600 text-base sm:text-lg font-semibold rounded-lg hover:bg-blue-50 transition-all duration-200 shadow-lg hover:shadow-xl whitespace-nowrap disabled:opacity-50"
               >
-                Join Waitlist
+                {status === 'loading' ? 'Joining...' : 'Join Waitlist'}
               </button>
             </form>
           </div>
@@ -91,6 +132,19 @@ export default function Home() {
           </div>
         </div>
       </section>
+
+      {/* Notification Toast */}
+      {message && (
+        <div 
+          className={`fixed bottom-4 left-1/2 transform -translate-x-1/2 px-6 py-3 rounded-lg shadow-lg transition-all duration-500 ${
+            status === 'error' 
+              ? 'bg-red-500 text-white' 
+              : 'bg-green-500 text-white'
+          } ${message ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}
+        >
+          {message}
+        </div>
+      )}
     </main>
   )
 }

@@ -6,9 +6,47 @@ import { useState } from 'react'
 interface SignupDialogProps {
   isOpen: boolean
   onClose: () => void
+  title?: string
+  description?: string
 }
 
-export default function SignupDialog({ isOpen, onClose }: SignupDialogProps) {
+export default function SignupDialog({ 
+  isOpen, 
+  onClose,
+  title = "Be the First to Know When We Launch",
+  description = "Sign up to get early access and exclusive benefits when we launch!"
+}: SignupDialogProps) {
+  const [email, setEmail] = useState('')
+  const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle')
+  const [message, setMessage] = useState('')
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault()
+    setStatus('loading')
+
+    try {
+      const response = await fetch('/api/subscribe', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email }),
+      })
+
+      const data = await response.json()
+
+      if (!response.ok) throw new Error(data.message || 'Something went wrong')
+
+      setStatus('success')
+      setMessage('Thank you for joining our waitlist!')
+      setEmail('')
+      setTimeout(() => onClose(), 2000) // Close dialog after 2 seconds
+    } catch (error) {
+      setStatus('error')
+      setMessage(error instanceof Error ? error.message : 'Failed to subscribe')
+    }
+  }
+
   return (
     <Dialog
       open={isOpen}
@@ -25,13 +63,13 @@ export default function SignupDialog({ isOpen, onClose }: SignupDialogProps) {
             </span>
           </div>
           <Dialog.Title className="text-2xl sm:text-3xl font-bold text-gray-900 mb-4 sm:mb-6 text-center px-4">
-            Be the First to Know When We Launch
+            {title}
           </Dialog.Title>
           <Dialog.Description className="text-lg sm:text-xl text-gray-600 mb-8 sm:mb-10 text-center max-w-2xl mx-auto px-4">
-            Sign up to get early access and exclusive benefits when we launch!
+            {description}
           </Dialog.Description>
 
-          <form className="space-y-6 sm:space-y-8 max-w-xl sm:max-w-2xl mx-auto px-4">
+          <form onSubmit={handleSubmit} className="space-y-6 sm:space-y-8 max-w-xl sm:max-w-2xl mx-auto px-4">
             <div className="space-y-2 sm:space-y-3">
               <label htmlFor="email" className="block text-sm sm:text-base font-medium text-gray-700">
                 Email address
@@ -39,17 +77,27 @@ export default function SignupDialog({ isOpen, onClose }: SignupDialogProps) {
               <input
                 id="email"
                 type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
                 placeholder="Enter your email address"
                 className="w-full px-4 sm:px-6 py-3 sm:py-4 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 text-base sm:text-lg"
                 required
               />
             </div>
+            
+            {message && (
+              <p className={`text-sm ${status === 'error' ? 'text-red-600' : 'text-green-600'} text-center`}>
+                {message}
+              </p>
+            )}
+
             <div className="flex flex-col sm:flex-row gap-3 sm:gap-6">
               <button
                 type="submit"
-                className="flex-1 px-6 sm:px-8 py-3 sm:py-4 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 transition-colors text-base sm:text-lg"
+                disabled={status === 'loading'}
+                className="flex-1 px-6 sm:px-8 py-3 sm:py-4 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 transition-colors text-base sm:text-lg disabled:opacity-50"
               >
-                Join Waitlist
+                {status === 'loading' ? 'Joining...' : 'Join Waitlist'}
               </button>
               <button
                 type="button"
