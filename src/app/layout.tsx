@@ -16,10 +16,41 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-        <header className="border-b bg-white/80 backdrop-blur-sm sticky top-0 z-50">
+        <header className="border-b bg-white !bg-opacity-100 sticky top-0 z-50">
           <Navigation />
         </header>
         {children}
+        <footer className="bg-gradient-to-br from-blue-600 via-blue-700 to-blue-800 text-white">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-16 py-12">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+              <div>
+                <h3 className="text-xl font-bold mb-4">QuizzQ</h3>
+                <p className="text-blue-100">
+                  The future of AI-powered learning, making education accessible and personalized for everyone.
+                </p>
+              </div>
+              <div>
+                <h3 className="text-xl font-bold mb-4">Quick Links</h3>
+                <ul className="space-y-2">
+                  <li><a href="#" className="text-blue-100 hover:text-white">Videos & Quizzes</a></li>
+                  <li><a href="#" className="text-blue-100 hover:text-white">Exam Questions</a></li>
+                  <li><a href="#" className="text-blue-100 hover:text-white">For Students</a></li>
+                  <li><a href="#" className="text-blue-100 hover:text-white">For Teachers</a></li>
+                </ul>
+              </div>
+              <div>
+                <h3 className="text-xl font-bold mb-4">Contact</h3>
+                <ul className="space-y-2">
+                  <li className="text-blue-100">Email: info@quizzq.com</li>
+                  <li className="text-blue-100">Support: help@quizzq.com</li>
+                </ul>
+              </div>
+            </div>
+            <div className="border-t border-blue-500/30 mt-8 pt-8 text-center text-blue-100">
+              <p>&copy; {new Date().getFullYear()} QuizzQ. All rights reserved.</p>
+            </div>
+          </div>
+        </footer>
       </body>
     </html>
   )

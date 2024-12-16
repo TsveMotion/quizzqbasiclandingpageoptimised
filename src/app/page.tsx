@@ -88,7 +88,7 @@ export default function Home() {
       </section>
 
       {/* Features Section */}
-      <section className="bg-gray-50 px-4 sm:px-6 md:px-16 py-16 sm:py-24">
+      <section className="bg-gray-50 px-4 sm:px-6 md:px-16 py-16 sm:py-24 flex-grow">
         <div className="max-w-7xl mx-auto">
           <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-center mb-4 sm:mb-6 text-gray-900">
             Coming Soon to QuizzQ
