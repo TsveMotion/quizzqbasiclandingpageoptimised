@@ -6,7 +6,20 @@ import Navigation from "@/components/Navigation"
 
 const inter = Inter({ subsets: ["latin"] })
 
-export const metadata: Metadata = pageMetadata
+export const metadata: Metadata = {
+  title: 'QuizzQ - AI-Powered Learning Platform (Beta)',
+  description: 'Join the waitlist for our revolutionary AI-powered learning platform.',
+  icons: {
+    icon: [
+      {
+        url: '/logo.png',
+        href: '/logo.png',
+      }
+    ],
+    shortcut: '/logo.png',
+    apple: '/logo.png',
+  },
+}
 
 export default function RootLayout({
   children,
@@ -15,6 +28,10 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
+      <head>
+        <link rel="icon" href="/logo.png" />
+        <link rel="apple-touch-icon" href="/logo.png" />
+      </head>
       <body className={inter.className}>
         <header className="border-b bg-white !bg-opacity-100 sticky top-0 z-50">
           <Navigation />

@@ -3,12 +3,12 @@ export const metadata = {
   description: 'Join the waitlist for our revolutionary AI-powered learning platform. Be the first to experience personalized learning with our AI tutor.',
   keywords: 'AI learning platform, beta signup, education waitlist, AI tutor, personalized learning',
   icons: {
-    icon: '/icon.svg',
-    shortcut: '/icon.svg',
-    apple: '/icon.svg',
+    icon: '/logo.png',
+    shortcut: '/logo.png',
+    apple: '/logo.png',
     other: {
       rel: 'apple-touch-icon-precomposed',
-      url: '/icon.svg',
+      url: '/logo.png',
     },
   },
 } 
