@@ -1,14 +1,71 @@
-export const metadata = {
-  title: 'QuizzQ - AI-Powered Learning Platform (Beta)',
-  description: 'Join the waitlist for our revolutionary AI-powered learning platform. Be the first to experience personalized learning with our AI tutor.',
-  keywords: 'AI learning platform, beta signup, education waitlist, AI tutor, personalized learning',
-  icons: {
-    icon: '/logo.png',
-    shortcut: '/logo.png',
-    apple: '/logo.png',
-    other: {
-      rel: 'apple-touch-icon-precomposed',
-      url: '/logo.png',
+import { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  metadataBase: new URL('https://quizqb.com'),
+  title: {
+    default: 'Quiz QB - Interactive Online Quizzes for Students | Free Educational Quizzes',
+    template: '%s | Quiz QB - Educational Quizzes',
+  },
+  description: 'Free online quizzes for students. Interactive learning quizzes in Math, Science, English, and more. Practice GCSE, SAT prep, and educational quizzes to improve grades.',
+  keywords: [
+    'online quizzes for students',
+    'free student quizzes',
+    'interactive learning quizzes',
+    'educational quizzes for kids',
+    'study quizzes for exams',
+    'math quizzes for students',
+    'science quizzes for school',
+    'english grammar quizzes',
+    'geography quiz for students',
+    'history quiz questions',
+    'computer science quizzes online',
+    'GCSE practice quizzes',
+    'SAT prep quizzes',
+    'exam revision quizzes',
+    'test your knowledge quizzes',
+    'mock test quizzes online',
+    'fun learning quizzes',
+    'brain teaser quizzes',
+    'interactive school quizzes',
+    'quick quizzes for learning',
+    'daily quiz challenges',
+  ],
+  authors: [{ name: 'Quiz QB Team' }],
+  creator: 'Quiz QB',
+  publisher: 'Quiz QB',
+  openGraph: {
+    type: 'website',
+    title: 'Quiz QB - Interactive Online Quizzes for Students',
+    description: 'Free online quizzes for students. Interactive learning quizzes in Math, Science, English, and more. Practice GCSE, SAT prep, and educational quizzes to improve grades.',
+    siteName: 'Quiz QB',
+    images: [
+      {
+        url: '/og-image.jpg',
+        width: 1200,
+        height: 630,
+        alt: 'Quiz QB - Interactive Educational Quizzes',
+      },
+    ],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Quiz QB - Interactive Online Quizzes for Students',
+    description: 'Free online quizzes for students. Interactive learning quizzes in Math, Science, English, and more. Practice GCSE, SAT prep, and educational quizzes to improve grades.',
+    images: ['/twitter-image.jpg'],
+    creator: '@QuizQB',
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      'max-video-preview': -1,
+      'max-image-preview': 'large',
+      'max-snippet': -1,
     },
   },
-} 
+  verification: {
+    google: 'your-google-verification-code',
+  },
+};

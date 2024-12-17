@@ -1,0 +1,93 @@
+// This is your Prisma schema file
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model User {
+  id            String    @id @default(cuid())
+  email         String    @unique
+  name          String
+  password      String
+  role          UserRole  @default(STUDENT)
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  assignments   Assignment[]
+  submissions   Submission[]
+  quizAttempts  QuizAttempt[]
+}
+
+enum UserRole {
+  STUDENT
+  TEACHER
+  ADMIN
+}
+
+model Assignment {
+  id          String      @id @default(cuid())
+  title       String
+  description String
+  dueDate     DateTime
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+  teacher     User        @relation(fields: [teacherId], references: [id])
+  teacherId   String
+  submissions Submission[]
+}
+
+model Submission {
+  id           String     @id @default(cuid())
+  content      String
+  grade        Float?
+  feedback     String?
+  submittedAt  DateTime   @default(now())
+  assignment   Assignment @relation(fields: [assignmentId], references: [id])
+  assignmentId String
+  student      User       @relation(fields: [studentId], references: [id])
+  studentId    String
+}
+
+model Quiz {
+  id          String       @id @default(cuid())
+  title       String
+  description String
+  timeLimit   Int         // in minutes
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+  questions   Question[]
+  attempts    QuizAttempt[]
+}
+
+model Question {
+  id          String    @id @default(cuid())
+  content     String
+  type        QuestionType
+  options     String[]  // For multiple choice questions
+  answer      String    // Correct answer
+  points      Int
+  quiz        Quiz      @relation(fields: [quizId], references: [id])
+  quizId      String
+}
+
+enum QuestionType {
+  MULTIPLE_CHOICE
+  SHORT_ANSWER
+  LONG_ANSWER
+}
+
+model QuizAttempt {
+  id        String    @id @default(cuid())
+  startedAt DateTime  @default(now())
+  endedAt   DateTime?
+  score     Float?
+  answers   Json      // Store user answers
+  quiz      Quiz      @relation(fields: [quizId], references: [id])
+  quizId    String
+  student   User      @relation(fields: [studentId], references: [id])
+  studentId String
+}

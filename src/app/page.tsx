@@ -1,165 +1,148 @@
-'use client'
-
-import { useState } from 'react'
+import Link from 'next/link';
+import Image from 'next/image';
 
 export default function Home() {
-  const [email, setEmail] = useState('')
-  const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle')
-  const [message, setMessage] = useState('')
+  const subjects = [
+    { name: 'Mathematics', icon: '📐', path: '/subjects/math' },
+    { name: 'Science', icon: '🔬', path: '/subjects/science' },
+    { name: 'English', icon: '📚', path: '/subjects/english' },
+    { name: 'Geography', icon: '🌍', path: '/subjects/geography' },
+    { name: 'History', icon: '⏳', path: '/subjects/history' },
+    { name: 'Computer Science', icon: '💻', path: '/subjects/computer-science' },
+  ];
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-    setStatus('loading')
-
-    try {
-      const response = await fetch('/api/subscribe', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ email }),
-      })
-
-      const data = await response.json()
-
-      if (!response.ok) throw new Error(data.message || 'Something went wrong')
-
-      setStatus('success')
-      setMessage('Thank you for joining our waitlist!')
-      setEmail('')
-
-      // Reset message after 5 seconds
-      setTimeout(() => {
-        setStatus('idle')
-        setMessage('')
-      }, 5000)
-    } catch (error) {
-      setStatus('error')
-      setMessage(error instanceof Error ? error.message : 'Failed to subscribe')
-      
-      // Reset error message after 5 seconds
-      setTimeout(() => {
-        setStatus('idle')
-        setMessage('')
-      }, 5000)
-    }
-  }
+  const features = [
+    {
+      title: 'Interactive Learning Quizzes',
+      description: 'Engage with our interactive quizzes designed to make learning fun and effective.',
+      icon: '🎯',
+    },
+    {
+      title: 'Exam Preparation',
+      description: 'Practice with GCSE and SAT prep quizzes to boost your exam performance.',
+      icon: '📝',
+    },
+    {
+      title: 'Daily Challenges',
+      description: 'Test your knowledge with our daily quiz challenges across various subjects.',
+      icon: '🏆',
+    },
+    {
+      title: 'Progress Tracking',
+      description: 'Monitor your improvement with detailed performance analytics.',
+      icon: '📊',
+    },
+  ];
 
   return (
-    <main className="min-h-screen bg-gray-50">
+    <main className="bg-white">
       {/* Hero Section */}
-      <section className="relative overflow-hidden px-4 sm:px-6 md:px-16 py-12 sm:py-16 md:py-24 bg-gradient-to-br from-blue-600 via-blue-700 to-blue-800">
-        <div className="absolute inset-0 bg-grid-white/[0.2] bg-[size:16px]" />
-        <div className="absolute inset-0 bg-gradient-to-t from-blue-800/50 to-transparent" />
-        
-        <div className="relative max-w-4xl mx-auto text-center">
-          <div className="inline-block px-3 py-2 sm:px-4 sm:py-2 bg-blue-500/10 rounded-full text-blue-100 text-sm font-semibold mb-4 sm:mb-6">
-            🚀 Coming Soon - Join the Waitlist
-          </div>
-          <h1 className="text-3xl sm:text-4xl md:text-6xl font-extrabold text-white leading-tight tracking-tight mb-4 sm:mb-8">
-            The Future of Learning is Coming
-          </h1>
-          <p className="text-lg sm:text-xl leading-relaxed text-blue-100 max-w-2xl mx-auto mb-6 sm:mb-8 px-4">
-            We&apos;re building the most advanced AI-powered learning platform. Here&apos;s what you can expect:
-          </p>
-          <div className="max-w-md mx-auto mb-4 sm:mb-6 px-4 relative">
-            <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row gap-3">
-              <input 
-                type="email" 
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                placeholder="Enter your email address" 
-                className="flex-1 px-4 py-3 rounded-lg text-black placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                required
-              />
-              <button 
-                type="submit"
-                disabled={status === 'loading'}
-                className="px-6 py-3 bg-white text-blue-600 text-base sm:text-lg font-semibold rounded-lg hover:bg-blue-50 transition-all duration-200 shadow-lg hover:shadow-xl whitespace-nowrap disabled:opacity-50"
+      <section className="bg-gradient-to-r from-blue-700 to-blue-900 text-white py-24">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center max-w-4xl mx-auto">
+            <h1 className="text-5xl md:text-6xl font-bold mb-8 leading-tight">
+              Free Interactive Online Quizzes for Students
+            </h1>
+            <p className="text-xl md:text-2xl mb-12 leading-relaxed">
+              Enhance your learning with our comprehensive collection of educational quizzes in Math, Science, English, and more.
+            </p>
+            <div className="space-x-6">
+              <Link
+                href="/register"
+                className="inline-block bg-white text-blue-900 px-8 py-4 rounded-lg font-semibold text-lg hover:bg-blue-50 transition-colors shadow-lg hover:shadow-xl"
               >
-                {status === 'loading' ? 'Joining...' : 'Join Waitlist'}
-              </button>
-            </form>
+                Start Learning Now
+              </Link>
+              <Link
+                href="/about"
+                className="inline-block bg-transparent border-2 border-white text-white px-8 py-4 rounded-lg font-semibold text-lg hover:bg-white hover:text-blue-900 transition-colors"
+              >
+                Learn More
+              </Link>
+            </div>
           </div>
-          <p className="text-sm text-blue-200 px-4">
-            Be the first to know when we launch. No spam, just updates.
-          </p>
+        </div>
+      </section>
+
+      {/* Subjects Section */}
+      <section className="py-24 bg-gray-50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <h2 className="text-4xl font-bold text-center mb-16 text-black">
+            Explore Our Subject-Specific Quizzes
+          </h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {subjects.map((subject) => (
+              <Link
+                key={subject.name}
+                href={subject.path}
+                className="bg-white p-8 rounded-xl shadow-md hover:shadow-xl transition-shadow border border-gray-200 hover:border-blue-500"
+              >
+                <div className="text-5xl mb-6">{subject.icon}</div>
+                <h3 className="text-2xl font-bold mb-4 text-gray-900">{subject.name}</h3>
+                <p className="text-gray-600">Practice {subject.name.toLowerCase()} quizzes and improve your knowledge</p>
+              </Link>
+            ))}
+          </div>
         </div>
       </section>
 
       {/* Features Section */}
-      <section className="bg-gray-50 px-4 sm:px-6 md:px-16 py-16 sm:py-24 flex-grow">
-        <div className="max-w-7xl mx-auto">
-          <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-center mb-4 sm:mb-6 text-gray-900">
-            Coming Soon to QuizzQ
+      <section className="py-24 bg-gray-50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <h2 className="text-4xl font-bold text-center mb-16 text-black">
+            Why Choose Our Educational Quizzes?
           </h2>
-          <p className="text-base sm:text-lg md:text-xl text-gray-600 text-center mb-12 sm:mb-16 max-w-3xl mx-auto px-4">
-            We&apos;re building the most advanced AI-powered learning platform. Here&apos;s what you can expect:
-          </p>
-          
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 lg:gap-10 px-4">
-            <FeatureCard
-              icon="🤖"
-              title="24/7 AI Tutor"
-              description="Get instant help from our advanced AI tutor for any subject, anytime, anywhere"
-            />
-            <FeatureCard
-              icon="🎯"
-              title="Personalized Learning"
-              description="AI-driven study plans and recommendations tailored to your learning style and goals"
-            />
-            <FeatureCard
-              icon="📝"
-              title="Smart Quiz Generator"
-              description="AI-generated quizzes that adapt to your level across all subjects"
-            />
-            <FeatureCard
-              icon="📚"
-              title="Past Papers & Resources"
-              description="Comprehensive collection of past papers and study materials with AI-powered explanations"
-            />
-            <FeatureCard
-              icon="💰"
-              title="Affordable Learning"
-              description="More cost-effective than traditional tutoring with advanced AI features for all subjects"
-            />
-            <FeatureCard
-              icon="📱"
-              title="Learn Anywhere"
-              description="Access our platform on any device with our mobile-friendly interface"
-            />
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
+            {features.map((feature) => (
+              <div key={feature.title} className="bg-gray-50 p-8 rounded-xl shadow-md border border-gray-200">
+                <div className="text-5xl mb-6">{feature.icon}</div>
+                <h3 className="text-2xl font-bold mb-4 text-gray-900">{feature.title}</h3>
+                <p className="text-gray-600 leading-relaxed">{feature.description}</p>
+              </div>
+            ))}
           </div>
         </div>
       </section>
 
-      {/* Notification Toast */}
-      {message && (
-        <div 
-          className={`fixed bottom-4 left-1/2 transform -translate-x-1/2 px-6 py-3 rounded-lg shadow-lg transition-all duration-500 ${
-            status === 'error' 
-              ? 'bg-red-500 text-white' 
-              : 'bg-green-500 text-white'
-          } ${message ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}
-        >
-          {message}
+      {/* CTA Section */}
+      <section className="bg-blue-900 text-white py-24">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <h2 className="text-4xl font-bold mb-8">
+            Ready to Improve Your Grades?
+          </h2>
+          <p className="text-xl mb-12 max-w-2xl mx-auto leading-relaxed">
+            Join thousands of students using our interactive quizzes to enhance their learning experience.
+          </p>
+          <Link
+            href="/register"
+            className="inline-block bg-white text-blue-900 px-8 py-4 rounded-lg font-semibold text-lg hover:bg-blue-50 transition-colors shadow-lg hover:shadow-xl"
+          >
+            Get Started for Free
+          </Link>
         </div>
-      )}
+      </section>
+
+      {/* SEO Text Section */}
+      <section className="py-24 bg-gray-50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="prose prose-lg mx-auto">
+            <h2 className="text-4xl font-bold mb-8 text-black text-center">
+              The Best Quiz Website for Students
+            </h2>
+            <div className="space-y-6 text-black">
+              <p className="text-lg leading-relaxed">
+                Quiz QB offers a comprehensive collection of free online quizzes designed specifically for students. Our platform provides interactive learning experiences across various subjects, including mathematics, science, English grammar, geography, history, and computer science.
+              </p>
+              <p className="text-lg leading-relaxed">
+                Whether you're preparing for GCSE exams, SAT tests, or simply want to improve your knowledge, our educational quizzes are tailored to help you succeed. With daily quiz challenges, brain teasers, and subject-specific practice tests, you'll find everything you need to enhance your learning journey.
+              </p>
+              <p className="text-lg leading-relaxed">
+                Our interactive study tools and multiple-choice quizzes make learning engaging and effective. Test your knowledge, track your progress, and improve your grades with Quiz QB's extensive collection of educational resources.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
     </main>
-  )
-}
-
-interface FeatureCardProps {
-  icon: string
-  title: string
-  description: string
-}
-
-function FeatureCard({ icon, title, description }: FeatureCardProps) {
-  return (
-    <div className="bg-white p-8 rounded-xl shadow-lg hover:shadow-xl transition duration-300">
-      <div className="text-5xl mb-6">{icon}</div>
-      <h3 className="text-2xl font-bold mb-4 text-gray-900">{title}</h3>
-      <p className="text-lg text-gray-700 leading-relaxed">{description}</p>
-    </div>
-  )
+  );
 }

@@ -5,6 +5,10 @@
 :root {
   --background: #ffffff;
   --foreground: #171717;
+  --primary-color: #2563EB; /* Blue-600 */
+  --primary-hover: #1D4ED8; /* Blue-700 */
+  --primary-dark: #1E40AF; /* Blue-800 */
+  --accent-color: #3B82F6; /* Blue-500 */
 }
 
 @media (prefers-color-scheme: dark) {
