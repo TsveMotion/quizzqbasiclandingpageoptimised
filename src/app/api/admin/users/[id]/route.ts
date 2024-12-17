@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
-import { getServerSession } from 'next-auth';
-import { authOptions } from '../../../auth/[...nextauth]/route';
+import type { NextRequest } from 'next/server';
+import { getServerAuthSession } from '@/lib/auth';
 import prisma from '@/lib/prisma';
 import { z } from 'zod';
 import bcrypt from 'bcryptjs';
@@ -11,12 +11,15 @@ const updateAdminSchema = z.object({
   password: z.string().min(6, 'Password must be at least 6 characters').optional(),
 });
 
+export const dynamic = 'force-dynamic';
+export const runtime = 'nodejs';
+
 export async function PATCH(
-  req: Request,
-  { params }: { params: { id: string } }
-) {
+  request: NextRequest,
+  context: any
+): Promise<NextResponse> {
   try {
-    const session = await getServerSession(authOptions);
+    const session = await getServerAuthSession();
 
     if (!session?.user) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
@@ -30,7 +33,7 @@ export async function PATCH(
       );
     }
 
-    const body = await req.json();
+    const body = await request.json();
     const validatedData = updateAdminSchema.parse(body);
 
     // If updating email, check if it's already taken
@@ -39,7 +42,7 @@ export async function PATCH(
         where: {
           email: validatedData.email,
           NOT: {
-            id: params.id,
+            id: context.params.id,
           },
         },
       });
@@ -60,7 +63,7 @@ export async function PATCH(
 
     // Update the user
     const updatedUser = await prisma.user.update({
-      where: { id: params.id },
+      where: { id: context.params.id },
       data: updateData,
       select: {
         id: true,
@@ -87,11 +90,11 @@ export async function PATCH(
 }
 
 export async function GET(
-  req: Request,
-  { params }: { params: { id: string } }
-) {
+  request: NextRequest,
+  context: any
+): Promise<NextResponse> {
   try {
-    const session = await getServerSession(authOptions);
+    const session = await getServerAuthSession();
 
     if (!session?.user) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
@@ -105,7 +108,7 @@ export async function GET(
     }
 
     const user = await prisma.user.findUnique({
-      where: { id: params.id },
+      where: { id: context.params.id },
       select: {
         id: true,
         name: true,
@@ -132,11 +135,11 @@ export async function GET(
 }
 
 export async function DELETE(
-  request: Request,
-  { params }: { params: { id: string } }
-) {
+  request: NextRequest,
+  context: any
+): Promise<NextResponse> {
   try {
-    const session = await getServerSession(authOptions);
+    const session = await getServerAuthSession();
 
     if (!session?.user) {
       return NextResponse.json(
@@ -154,7 +157,7 @@ export async function DELETE(
     }
 
     const adminToDelete = await prisma.user.findUnique({
-      where: { id: params.id },
+      where: { id: context.params.id },
     });
 
     if (!adminToDelete) {
@@ -174,7 +177,7 @@ export async function DELETE(
 
     // Delete the administrator
     await prisma.user.delete({
-      where: { id: params.id },
+      where: { id: context.params.id },
     });
 
     return NextResponse.json({ message: 'Administrator deleted successfully.' });

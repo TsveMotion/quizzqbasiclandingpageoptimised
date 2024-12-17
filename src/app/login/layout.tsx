@@ -1,6 +1,5 @@
-import { getServerSession } from 'next-auth';
+import { getServerAuthSession } from '@/lib/auth';
 import { redirect } from 'next/navigation';
-import { authOptions } from '../api/auth/[...nextauth]/route';
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {
@@ -13,7 +12,7 @@ export default async function LoginLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const session = await getServerSession(authOptions);
+  const session = await getServerAuthSession();
 
   if (session) {
     redirect('/dashboard');
